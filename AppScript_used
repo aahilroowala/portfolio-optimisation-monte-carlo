@@ -1,0 +1,68 @@
+function generateRandomPortfolios() {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+// ================== CHANGE THESE IF YOUR RANGES ARE DIFFERENT ==================
+var numAssets = 6;
+var weightsRange = sheet.getRange("B2:B7"); // your 6 weights (for reference only)
+var expReturnsRange = sheet.getRange("C2:C7"); // annual expected returns
+var covMatrixRange = sheet.getRange("H2:M7"); // 6x6 annual covariance matrix
+var numPortfolios = 10000; // increase to 5000+ for even better frontier
+// =============================================================================
+
+var results = [["Portfolio",
+"Expected Return",
+"Volatility (Risk)",
+"Sharpe Ratio",
+"1 Weight",
+"2 Weight",
+"3 Weight",
+"4 Weight",
+"5 Weight",
+"6 Weight"]];
+
+for (var i = 0; i < numPortfolios; i++) {
+// Generate random weights that sum to 1
+var weights = [];
+var sum = 0;
+for (var j = 0; j < numAssets; j++) {
+var w = Math.random();
+weights.push(w);
+sum += w;
+}
+for (var j = 0; j < numAssets; j++) {
+weights[j] = weights[j] / sum; // normalise
+}
+
+// Portfolio expected return
+var portReturn = 0;
+var expReturns = expReturnsRange.getValues();
+for (var j = 0; j < numAssets; j++) {
+portReturn += weights[j] * expReturns[j][0];
+}
+
+// Portfolio variance = wᵀ Σ w
+var covMatrix = covMatrixRange.getValues();
+var variance = 0;
+for (var j = 0; j < numAssets; j++) {
+for (var k = 0; k < numAssets; k++) {
+variance += weights[j] * covMatrix[j][k] * weights[k];
+}
+}
+var volatility = Math.sqrt(variance);
+
+// Sharpe (risk-free = 4%)
+var sharpe = (portReturn - 0.04) / volatility;
+
+// Add everything to results (now includes the 6 weights)
+results.push(["Portfolio " + (i+1),
+portReturn,
+volatility,
+sharpe,
+weights[0], weights[1], weights[2],
+weights[3], weights[4], weights[5]]);
+}
+
+// Output to columns Q to Z (10 columns total)
+sheet.getRange("Q1:Z" + (numPortfolios + 1)).setValues(results);
+
+}
