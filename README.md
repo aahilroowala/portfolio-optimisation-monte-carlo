@@ -1,7 +1,9 @@
 # portfolio-optimisation-monte-carlo
 Monte-Carlo  portfolio simulation
 Objective
-I wanted to experience what real quantitative finance work feels like — analysing historical data, building risk-return models, running large-scale simulations, and interpreting the output the way analysts and portfolio managers do every day. This project was not part of any school assignment; I built it independently to bridge the gap between theory and actual desk-level thinking.
+I wanted to experience what real quantitative finance work feels like — analysing historical data, building risk-return models, 
+running large-scale simulations, and interpreting the output the way analysts and portfolio managers do every day. This project was not part of any school assignment; 
+I built it independently to bridge the gap between theory and actual desk-level thinking.
 Approach
 • Selected six liquid, diverse stocks/ETFs: Cisco Systems, NVIDIA, Rolls-Royce, Lloyds Banking Group, BP, Procter & Gamble.
 • Pulled adjusted close prices using Excel’s built-in Stocks data type.
